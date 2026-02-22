@@ -148,7 +148,7 @@ const Dashboard = ({ token }) => {
           <ListCard title="Avg Response Times (ms)" icon={SpeedIcon}>
             {responseList.map((item, idx) => (
               <ListItem key={idx} divider sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant="body2" sx={{ maxWidth: '70%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <Typography variant="body2" sx={{ maxWidth: '70%'}}>
                   {item.name}
                 </Typography>
                 <Chip
