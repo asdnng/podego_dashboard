@@ -1,13 +1,13 @@
 import React from 'react';
 import { Card, CardContent, Box, Typography } from '@mui/material';
 
-const StatCard = ({ title, value, icon, color, textColor, trend }) => {
+const StatCard = ({ title, value, icon: Icon, color, textColor, trend }) => {
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', bgcolor: '#fff', boxShadow: 3, borderRadius: 2 }}>
       <CardContent sx={{ display: 'flex', alignItems: 'center', p: 3 }}>
         {/* icon */}
         <Box sx={{ p: 2, borderRadius: '50%', bgcolor: color, mr: 2, display: 'flex', boxShadow: 1 }}>
-            {React.cloneElement(icon, { color: textColor })}
+            <Icon fontSize="large" color={textColor} />
         </Box>
         {/* text */}
         <Box>

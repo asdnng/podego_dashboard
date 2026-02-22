@@ -70,131 +70,114 @@ const Dashboard = ({ token }) => {
       {error && <Alert severity="warning" sx={{ mb: 3 }}>{error}</Alert>}
 
       <Grid container spacing={3}>        
-        <Grid item xs={12} sm={6} md={3}>
+
           <StatCard 
             title="System Health" 
             value={data.health?.status || "OK"} 
-            icon={<HealthAndSafetyIcon fontSize="large" />}
+            icon={HealthAndSafetyIcon}
             color={data.health?.status === 'Down' ? '#ffebee' : '#e8f5e9'}
             textColor={data.health?.status === 'Down' ? 'error' : 'success'}
           />
-        </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
           <StatCard 
             title="Daily Active Users" 
             value={dauInfo.current.toLocaleString()} 
-            icon={<GroupIcon fontSize="large" />}
+            icon={GroupIcon}
             color={dauInfo.diff >= 0 ? "#e3f2fd" : "#ffebee"} 
             textColor={dauInfo.diff >= 0 ? "primary" : "error"}
             trend={`${dauInfo.diff >= 0 ? '▲' : '▼'} ${Math.abs(dauInfo.diff)} (${dauInfo.rate}%)`}
           />
-        </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
           <StatCard 
             title="API Requests (24h)" 
             value={totalApiRequests.toLocaleString()} 
-            icon={<HttpIcon fontSize="large" />}
+            icon={HttpIcon}
             color="#fff3e0"
             textColor="warning"
           />
-        </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
           <StatCard 
             title="Avg Error Rate" 
             value={`${avgErrorRate}%`} 
-            icon={<ErrorOutlineIcon fontSize="large" />}
+            icon={ErrorOutlineIcon}
             color={avgErrorRate > 5 ? "#ffebee" : "#e8f5e9"}
             textColor={avgErrorRate > 5 ? "error" : "success"}
             trend="Avg across endpoints"
           />
-        </Grid>
 
-        <Grid item xs={12} md={6}>
-            <ListCard title="New Signups (Last 7 Days)" icon={<PersonAddIcon />}>
-                {signupList.length > 0 ? (
-                    signupList.map((item, idx) => (
-                        <ListItem key={idx} divider sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography variant="body1">{item.date}</Typography>
-                            <Chip label={`+${item.count} Users`} color="primary" size="small" variant="outlined" />
-                        </ListItem>
-                    ))
-                ) : (
-                    <Box p={2}>No data available</Box>
-                )}
-            </ListCard>
-        </Grid>
+          <ListCard title="New Signups (Last 7 Days)" icon={PersonAddIcon}>
+            {signupList.length > 0 ? (
+              signupList.map((item, idx) => (
+                <ListItem key={idx} divider sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="body1">{item.date}</Typography>
+                  <Chip label={`+${item.count} Users`} color="primary" size="small" variant="outlined" />
+                </ListItem>
+              ))
+            ) : (
+              <Box p={2}>No data available</Box>
+            )}
+          </ListCard>
 
-        <Grid item xs={12} md={6}>
-            <ListCard title="Top Users by Country" icon={<PublicIcon />}>
-                 {countryList.length > 0 ? (
-                    countryList.map((item, idx) => (
-                        <ListItem key={idx} divider sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography variant="body1" fontWeight="bold">{item.name}</Typography>
-                            <Chip label={`${item.value.toLocaleString()} Users`} color="primary" variant="outlined" size="small" />
-                        </ListItem>
-                    ))
-                 ) : (
-                    <Box p={2}>No Data</Box>
-                 )}
-            </ListCard>
-        </Grid>
+          <ListCard title="Top Users by Country" icon={PublicIcon}>
+            {countryList.length > 0 ? (
+              countryList.map((item, idx) => (
+                <ListItem key={idx} divider sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="body1" fontWeight="bold">{item.name}</Typography>
+                  <Chip label={`${item.value.toLocaleString()} Users`} color="primary" variant="outlined" size="small" />
+                </ListItem>
+              ))
+            ) : (
+              <Box p={2}>No Data</Box>
+            )}
+          </ListCard>
 
-        <Grid item xs={12} md={6}>
-            <ListCard title="Feature Usage (%)" icon={<AppsIcon />}>
-                 {featureList.map((item, idx) => (
-                    <ListItem key={idx} divider sx={{ display: 'block' }}>
-                        <Box display="flex" justifyContent="space-between" mb={0.5}>
-                            <Typography variant="body2">{item.name}</Typography>
-                            <Typography variant="body2" fontWeight="bold">{item.value}%</Typography>
-                        </Box>
-                        <Box sx={{ width: '100%', bgcolor: '#eee', height: 8, borderRadius: 4, overflow: 'hidden' }}>
-                            <Box sx={{ width: `${Math.min(item.value, 100)}%`, bgcolor: 'primary.main', height: '100%' }} />
-                        </Box>
-                    </ListItem>
-                 ))}
-            </ListCard>
-        </Grid>
+          <ListCard title="Feature Usage (%)" icon={AppsIcon}>
+            {featureList.map((item, idx) => (
+              <ListItem key={idx} divider sx={{ display: 'block' }}>
+                <Box display="flex" justifyContent="space-between" mb={0.5}>
+                  <Typography variant="body2">{item.name}</Typography>
+                  <Typography variant="body2" fontWeight="bold">{item.value}%</Typography>
+                </Box>
+                <Box sx={{ width: '100%', bgcolor: '#eee', height: 8, borderRadius: 4, overflow: 'hidden' }}>
+                  <Box sx={{ width: `${Math.min(item.value, 100)}%`, bgcolor: 'primary.main', height: '100%' }} />
+                </Box>
+              </ListItem>
+            ))}
+          </ListCard>
 
-        <Grid item xs={12} md={6}>
-             <ListCard title="Avg Response Times (ms)" icon={<SpeedIcon />}>
-                {responseList.map((item, idx) => (
-                    <ListItem key={idx} divider sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography variant="body2" sx={{ maxWidth: '70%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                            {item.name}
-                        </Typography>
-                        <Chip 
-                            label={`${item.value} ms`} 
-                            color={item.value > 500 ? "error" : item.value > 200 ? "warning" : "success"} 
-                            size="small" 
-                        />
-                    </ListItem>
-                ))}
-            </ListCard>
-        </Grid>
+          <ListCard title="Avg Response Times (ms)" icon={SpeedIcon}>
+            {responseList.map((item, idx) => (
+              <ListItem key={idx} divider sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Typography variant="body2" sx={{ maxWidth: '70%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {item.name}
+                </Typography>
+                <Chip
+                  label={`${item.value} ms`}
+                  color={item.value > 500 ? "error" : item.value > 200 ? "warning" : "success"}
+                  size="small"
+                />
+              </ListItem>
+            ))}
+          </ListCard>
 
-        <Grid item xs={12} md={6}>
-            <ListCard title="Today's Quotes" icon={<FormatQuoteIcon />}>
-                 {quoteList.length > 0 ? (
-                    quoteList.map((item, idx) => (
-                        <ListItem key={idx} divider alignItems="flex-start">
-                            <ListItemText 
-                                primary={
-                                    <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
-                                        "{item.text}"
-                                    </Typography>
-                                } 
-                                secondary={`- ${item.author}`} 
-                            />
-                        </ListItem>
-                    ))
-                 ) : (
-                    <Box p={2}>No quotes available</Box>
-                 )}
-            </ListCard>
-        </Grid>
+          <ListCard title="Today's Quotes" icon={FormatQuoteIcon}>
+            {quoteList.length > 0 ? (
+              quoteList.map((item, idx) => (
+                <ListItem key={idx} divider alignItems="flex-start">
+                  <ListItemText
+                    primary={
+                      <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
+                        "{item.text}"
+                      </Typography>
+                    }
+                    secondary={`- ${item.author}`}
+                  />
+                </ListItem>
+              ))
+            ) : (
+              <Box p={2}>No quotes available</Box>
+            )}
+          </ListCard>
 
       </Grid>
     </Container>
